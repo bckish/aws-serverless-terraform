@@ -21,7 +21,7 @@ python3 -m compileall -q Backend
 node --check Frontend/js/app.js
 ```
 
-Before using the browser application, configure your own API Gateway URL; never submit student data to an inherited endpoint. The handlers expect a DynamoDB table named Student-Details and the GET handler specifies a region; configure both for your own environment. Use synthetic data only.
+Before using the browser application, set `API_BASE_URL` in [Frontend/js/app.js](Frontend/js/app.js) to your own API Gateway stage URL (without the `/getStudent` or `/addStudent` suffix); never submit student data to an inherited endpoint. The handlers expect a DynamoDB table named Student-Details and the GET handler specifies a region; configure both for your own environment. Use synthetic data only.
 
 For infrastructure, consult the original [Terraform example](https://github.com/AmanPathak-DevOps/Terraform-for-AWS/blob/master/Non-Modularized/AWS-Serverless-Project/) separately. Review IAM, authentication, CORS, state and cost before any AWS deployment. This checkout has no self-contained Terraform root; no cloud deployment has been verified.
 
