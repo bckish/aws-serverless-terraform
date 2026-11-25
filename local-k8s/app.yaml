@@ -1,0 +1,51 @@
+# Disposable local Kind fixture only. Sample values are not production credentials.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: serverless
+  namespace: serverless-local
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: serverless
+  template:
+    metadata:
+      labels:
+        app: serverless
+    spec:
+      containers:
+      - name: serverless
+        image: bckish-local/serverless:runtime
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
+        env: []
+        resources:
+          requests:
+            memory: 64Mi
+          limits:
+            memory: 768Mi
+        startupProbe:
+          httpGet:
+            path: /api/getStudent
+            port: 8080
+          periodSeconds: 5
+          failureThreshold: 60
+        readinessProbe:
+          httpGet:
+            path: /api/getStudent
+            port: 8080
+          periodSeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: serverless
+  namespace: serverless-local
+spec:
+  selector:
+    app: serverless
+  ports:
+  - port: 8080
+    targetPort: 8080
