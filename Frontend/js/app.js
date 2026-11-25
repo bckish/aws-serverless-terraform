@@ -1,8 +1,19 @@
+// Set this to your own API Gateway stage URL before using the lab.
+// An empty value intentionally disables all network requests.
+const API_BASE_URL = '';
+function apiEndpoint(path) {
+    return API_BASE_URL ? API_BASE_URL.replace(/\/$/, '') + '/' + path : null;
+}
+
 /********************************************
  * FETCH STUDENT DATA (unchanged API logic)
  ********************************************/
 var fetchStudentData = () => {
-    var endpoint = 'https://vmgjhpngo6.execute-api.us-east-1.amazonaws.com/student-api/getStudent';
+    var endpoint = apiEndpoint('getStudent');
+    if (!endpoint) {
+        console.warn('Set API_BASE_URL before fetching student data.');
+        return Promise.resolve();
+    }
 
     return fetch(endpoint)
         .then(response => {
@@ -53,7 +64,11 @@ var addStudent = (rollNumber, studentName, className) => {
 
     closeModal(); // hide modal before submitting
 
-    var endpoint = 'https://vmgjhpngo6.execute-api.us-east-1.amazonaws.com/student-api/addStudent';
+    var endpoint = apiEndpoint('addStudent');
+    if (!endpoint) {
+        console.warn('Set API_BASE_URL before submitting student data.');
+        return;
+    }
 
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
