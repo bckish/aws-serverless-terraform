@@ -1,6 +1,6 @@
 // Set this to your own API Gateway stage URL before using the lab.
 // An empty value intentionally disables all network requests.
-const API_BASE_URL = '';
+const API_BASE_URL = ['localhost', '127.0.0.1'].includes(window.location.hostname) ? '/api' : '';
 function apiEndpoint(path) {
     return API_BASE_URL ? API_BASE_URL.replace(/\/$/, '') + '/' + path : null;
 }

@@ -14,6 +14,16 @@ A learning lab for an HTML/CSS/JavaScript student registry backed by Python Lamb
 
 ## Local validation
 
+Run a fully local browser demo with an in-memory table (no AWS credentials or dependencies):
+
+```bash
+python3 local_server.py
+# Open http://127.0.0.1:8080
+python3 -m unittest discover -s tests
+```
+
+The demo shares the Lambda handler's data logic, but does not exercise live DynamoDB or API Gateway. The cloud handlers use the SDK's region configuration and optional STUDENT_TABLE environment variable.
+
 ```bash
 git clone https://github.com/bckish/aws-serverless-terraform.git
 cd aws-serverless-terraform

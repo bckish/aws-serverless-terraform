@@ -1,15 +1,17 @@
-import json
-import boto3
+import os
+
+
+def get_students(table):
+    response = table.scan()
+    data = list(response["Items"])
+    while "LastEvaluatedKey" in response:
+        response = table.scan(ExclusiveStartKey=response["LastEvaluatedKey"])
+        data.extend(response["Items"])
+    return data
+
 
 def lambda_handler(event, context):
-    dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+    import boto3
 
-    table = dynamodb.Table('Student-Details')
-
-    response = table.scan()
-    data = response['Items']
-
-    while 'LastEvaluatedKey' in response:
-        response = table.scan(ExclusiveStartKey=response['LastEvaluatedKey'])
-        data.extend(response['Items'])
-    return data
+    table = boto3.resource("dynamodb").Table(os.getenv("STUDENT_TABLE", "Student-Details"))
+    return get_students(table)
