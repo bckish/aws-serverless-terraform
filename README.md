@@ -38,3 +38,19 @@ For infrastructure, consult the original [Terraform example](https://github.com/
 ## Attribution and license
 
 Original implementation by Aman Pathak. See [UPSTREAM.md](UPSTREAM.md) for the source repository and [LICENSE](LICENSE) (MIT). The upstream license and copyright notices are unchanged.
+
+## Verified local Kubernetes results
+
+Test date: 25 November 2026. Environment: Docker Desktop on Apple Silicon, Kind v0.30.0, Kubernetes v1.34.3. Local images were imported into the isolated cluster; no images were pushed to a registry and no paid cloud resources were created.
+
+Tested code: `721f649` (merged main). Built the [local emulator Docker image](Dockerfile.local), loaded its ARM64 image into Kind, and deployed it with the included [local manifest](local-k8s/app.yaml). The pod was Ready, its frontend returned HTTP 200, and synthetic student creation and retrieval passed through the same local API.
+
+```bash
+docker build -f Dockerfile.local -t bckish-local/serverless:runtime .
+kind load docker-image --name YOUR_LOCAL_KIND bckish-local/serverless:runtime
+kubectl --kubeconfig /path/to/local-kind.kubeconfig create namespace serverless-local
+kubectl --kubeconfig /path/to/local-kind.kubeconfig apply -f local-k8s/app.yaml
+kubectl --kubeconfig /path/to/local-kind.kubeconfig -n serverless-local port-forward --address 127.0.0.1 service/serverless 28080:8080
+```
+
+Open http://127.0.0.1:28080. This is a local emulator with an in-memory table; the result does not verify AWS Lambda, DynamoDB, API Gateway or cloud Terraform deployment.
