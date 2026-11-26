@@ -54,3 +54,7 @@ kubectl --kubeconfig /path/to/local-kind.kubeconfig -n serverless-local port-for
 ```
 
 Open http://127.0.0.1:28080. This is a local emulator with an in-memory table; the result does not verify AWS Lambda, DynamoDB, API Gateway or cloud Terraform deployment.
+
+## Dependency maintenance (26 November 2026)
+
+The standard-library local emulator tests passed with Python deprecation warnings treated as errors, and the frontend JavaScript syntax check passed. No dependency replacement was required for this local path. CI now runs `python -W error::DeprecationWarning -m unittest discover -s tests`. Cloud-only dependencies and services are outside this local verification.
