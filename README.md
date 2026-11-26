@@ -58,3 +58,5 @@ Open http://127.0.0.1:28080. This is a local emulator with an in-memory table; t
 ## Dependency maintenance (26 November 2026)
 
 The standard-library local emulator tests passed with Python deprecation warnings treated as errors, and the frontend JavaScript syntax check passed. No dependency replacement was required for this local path. CI now runs `python -W error::DeprecationWarning -m unittest discover -s tests`. Cloud-only dependencies and services are outside this local verification.
+
+The follow-up local regression run passed the strict unit test, JavaScript syntax check, rebuilt Docker emulator, and synthetic student creation/retrieval. No AWS resources were created.
